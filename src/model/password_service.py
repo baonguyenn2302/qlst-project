@@ -4,6 +4,7 @@ from __future__ import annotations
 from argon2 import PasswordHasher, Type
 from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
 
+
 class PasswordService:
     def __init__(self) -> None:
         self._hasher = PasswordHasher(type=Type.ID)

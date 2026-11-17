@@ -6,6 +6,7 @@ from jinja2 import ChoiceLoader, FileSystemLoader
 
 from src.config import PROJECT_ROOT, get_flask_secret_key
 
+
 def create_app() -> Flask:
     view_root = PROJECT_ROOT / "view"
     app = Flask(
@@ -31,6 +32,7 @@ def create_app() -> Flask:
         return jsonify(status="ok", component="flask")
 
     return app
+
 
 if __name__ == "__main__":
     application = create_app()
