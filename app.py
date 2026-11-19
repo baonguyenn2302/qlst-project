@@ -1,10 +1,11 @@
-"""Diem vao Flask. Chua cai dat Module 1 hoac Module 2."""
+"""Diem vao Flask. Dang ky Blueprint Module 1; Module 2 chua cai dat."""
 from pathlib import Path
 
 from flask import Flask, jsonify, render_template
 from jinja2 import ChoiceLoader, FileSystemLoader
 
 from src.config import PROJECT_ROOT, get_flask_secret_key
+from src.controller.registration_controller import registration_bp
 
 
 def create_app() -> Flask:
@@ -21,6 +22,9 @@ def create_app() -> Flask:
         FileSystemLoader(str(view_root)),
     ])
     app.config["SECRET_KEY"] = get_flask_secret_key()
+
+    # Gan cac route GET/POST /register da dinh nghia trong Controller.
+    app.register_blueprint(registration_bp)
 
     @app.get("/")
     def home():

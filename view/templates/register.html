@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>Đăng ký thành viên</h1>
+
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+        <p role="status">{{ message }}</p>
+    {% endfor %}
+
+    {% if error %}
+        <p role="alert"><strong>Lỗi:</strong> {{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('registration.register') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        
+        <!-- 1. Họ và tên -->
+        <p>
+            <label for="full_name">Họ và tên:</label>
+            <input type="text" id="full_name" name="full_name"
+                    value="{{ form_values.get('full_name', '') }}"
+                    maxlength="100" required>
+        </p>
+
+        <!-- 2. Tên đăng nhập -->
+        <p>
+            <label for="username">Tên đăng nhập:</label>
+            <input type="text" id="username" name="username"
+                    value="{{ form_values.get('username', '') }}"
+                    maxlength="50" required>
+        </p>
+
+        <!-- 3. Mật khẩu -->
+        <p>
+            <label for="password">Mật khẩu:</label>
+            <input type="password" id="password" name="password"
+                    minlength="8" required>
+        </p>
+
+        <!-- 4. Số điện thoại -->
+        <p>
+            <label for="phone">Số điện thoại:</label>
+            <input type="tel" id="phone" name="phone"
+                    value="{{ form_values.get('phone', '') }}" required>
+        </p>
+
+        <!-- 5. Email -->
+        <p>
+            <label for="email">Email (không bắt buộc):</label>
+            <input type="email" id="email" name="email"
+                    value="{{ form_values.get('email', '') }}" maxlength="100">
+        </p>
+
+        <!-- 6. Địa chỉ -->
+        <p>
+            <label for="address">Địa chỉ (không bắt buộc):</label>
+            <input type="text" id="address" name="address"
+                    value="{{ form_values.get('address', '') }}" maxlength="255">
+        </p>
+
+        <button type="submit">Đăng ký</button>
+    </form>
+</body>
+</html>
