@@ -24,7 +24,3 @@ htmlcov/
 
 # macOS
 .DS_Store
-
-# Test results
-test_results.txt
-test_errors.txt
