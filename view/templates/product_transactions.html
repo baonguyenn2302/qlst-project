@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -25,14 +24,14 @@
                     <th scope="col">Thời điểm</th>
                     <th scope="col">Loại giao dịch</th>
                     <th scope="col">Mã chứng từ</th>
-                    <th scope="col">Số lượng bán</th>
-                    <th scope="col">Số lượng trả</th>
-                    <th scope="col">Số lượng ròng</th>
-                    <th scope="col">Đơn giá (đ)</th>
-                    <th scope="col">Doanh thu bán (đ)</th>
-                    <th scope="col">Tiền hoàn trả (đ)</th>
-                    <th scope="col">Doanh thu ròng (đ)</th>
-                    <th scope="col">Mã phiếu trả</th>
+                    <th scope="col" style="text-align: right;">Đơn giá (đ)</th>
+                    <th scope="col" style="text-align: right;">Số lượng bán</th>
+                    <th scope="col" style="text-align: right;">Số lượng trả</th>
+                    <th scope="col" style="text-align: right;">Số lượng ròng</th>
+                    <th scope="col" style="text-align: right;">Doanh thu bán (đ)</th>
+                    <th scope="col" style="text-align: right;">Tiền hoàn trả (đ)</th>
+                    <th scope="col" style="text-align: right;">Doanh thu ròng (đ)</th>
+                    <th scope="col" style="text-align: right;">Mã phiếu trả</th>
                     <th scope="col">Số serial</th>
                 </tr>
             </thead>
@@ -50,18 +49,30 @@
                             {% endif %}
                         </td>
                         <td>{{ transaction.document_code }}</td>
-                        <td>{{ transaction.quantity_sold }}</td>
-                        <td>{{ transaction.quantity_returned }}</td>
-                        <td>{{ transaction.net_quantity }}</td>
-                        <td>{{ transaction.unit_price }}</td>
-                        <td>{{ transaction.sales_revenue }}</td>
-                        <td>{{ transaction.refund_amount }}</td>
-                        <td>{{ transaction.net_revenue }}</td>
-                        <td>{{ transaction.return_id if transaction.return_id is not none else '—' }}</td>
+                        <td style="text-align: right;">{{ "{:,.0f}".format(transaction.unit_price) | replace(",", ".") }}</td>
+                        <td style="text-align: right;">{{ transaction.quantity_sold }}</td>
+                        <td style="text-align: right;">{{ transaction.quantity_returned }}</td>
+                        <td style="text-align: right;">{{ transaction.net_quantity }}</td>
+                        <td style="text-align: right;">{{ "{:,.0f}".format(transaction.sales_revenue) | replace(",", ".") }}</td>
+                        <td style="text-align: right;">{{ "{:,.0f}".format(transaction.refund_amount) | replace(",", ".") }}</td>
+                        <td style="text-align: right;">{{ "{:,.0f}".format(transaction.net_revenue) | replace(",", ".") }}</td>
+                        <td style="text-align: right;">{{ transaction.return_id if transaction.return_id is not none else '—' }}</td>
                         <td>{{ transaction.serial_number if transaction.serial_number is not none else '—' }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row" colspan="4" style="text-align: center;">TỔNG CỘNG</th>
+                    <td style="text-align: right;">{{ transactions | sum(attribute='quantity_sold') }}</td>
+                    <td style="text-align: right;">{{ transactions | sum(attribute='quantity_returned') }}</td>
+                    <td style="text-align: right;">{{ transactions | sum(attribute='net_quantity') }}</td>
+                    <td style="text-align: right;">{{ "{:,.0f}".format(transactions | sum(attribute='sales_revenue')) | replace(",", ".") }}</td>
+                    <td style="text-align: right;">{{ "{:,.0f}".format(transactions | sum(attribute='refund_amount')) | replace(",", ".") }}</td>
+                    <td style="text-align: right;">{{ "{:,.0f}".format(transactions | sum(attribute='net_revenue')) | replace(",", ".") }}</td>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
         </table>
     {% else %}
         <p>Không có giao dịch bán hoặc hoàn trả trong khoảng ngày đã chọn.</p>
