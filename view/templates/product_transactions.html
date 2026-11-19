@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>Chi tiết giao dịch sản phẩm</h1>
+
+    <p>Mã sản phẩm: {{ product_id }}</p>
+    <p>Khoảng ngày: {{ start_date }} đến {{ end_date }}</p>
+    <p>
+        <a href="{{ url_for('revenue.report', start_date=start_date, end_date=end_date) }}">
+            Quay lại báo cáo doanh thu
+        </a>
+    </p>
+
+    {% if error %}
+        <p role="alert"><strong>Lỗi:</strong> {{ error }}</p>
+    {% elif transactions %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th scope="col">Thời điểm</th>
+                    <th scope="col">Loại giao dịch</th>
+                    <th scope="col">Mã chứng từ</th>
+                    <th scope="col">Số lượng bán</th>
+                    <th scope="col">Số lượng trả</th>
+                    <th scope="col">Số lượng ròng</th>
+                    <th scope="col">Đơn giá (đ)</th>
+                    <th scope="col">Doanh thu bán (đ)</th>
+                    <th scope="col">Tiền hoàn trả (đ)</th>
+                    <th scope="col">Doanh thu ròng (đ)</th>
+                    <th scope="col">Mã phiếu trả</th>
+                    <th scope="col">Số serial</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.transaction_at }}</td>
+                        <td>
+                            {% if transaction.transaction_type == 'sale' %}
+                                Bán hàng
+                            {% elif transaction.transaction_type == 'return' %}
+                                Hoàn trả
+                            {% else %}
+                                {{ transaction.transaction_type }}
+                            {% endif %}
+                        </td>
+                        <td>{{ transaction.document_code }}</td>
+                        <td>{{ transaction.quantity_sold }}</td>
+                        <td>{{ transaction.quantity_returned }}</td>
+                        <td>{{ transaction.net_quantity }}</td>
+                        <td>{{ transaction.unit_price }}</td>
+                        <td>{{ transaction.sales_revenue }}</td>
+                        <td>{{ transaction.refund_amount }}</td>
+                        <td>{{ transaction.net_revenue }}</td>
+                        <td>{{ transaction.return_id if transaction.return_id is not none else '—' }}</td>
+                        <td>{{ transaction.serial_number if transaction.serial_number is not none else '—' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Không có giao dịch bán hoặc hoàn trả trong khoảng ngày đã chọn.</p>
+    {% endif %}
+</body>
+</html>
