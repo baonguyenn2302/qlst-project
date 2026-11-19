@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>Thống kê doanh thu sản phẩm</h1>
+
+    <form method="GET" action="{{ url_for('revenue.report') }}">
+        <p>
+            <label for="start_date">Ngày bắt đầu:</label>
+            <input type="date" id="start_date" name="start_date"
+                   value="{{ start_date }}" required>
+        </p>
+        <p>
+            <label for="end_date">Ngày kết thúc:</label>
+            <input type="date" id="end_date" name="end_date"
+                   value="{{ end_date }}" required>
+        </p>
+        <button type="submit">Thống kê</button>
+    </form>
+
+    {% if error %}
+        <p role="alert"><strong>Lỗi:</strong> {{ error }}</p>
+    {% endif %}
+
+    {% if not has_searched %}
+        <p>Vui lòng chọn khoảng ngày để xem thống kê.</p>
+    {% elif not error %}
+        {% if products %}
+            <table border="1">
+                <caption>Doanh thu theo từng sản phẩm</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Mã sản phẩm</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Thương hiệu</th>
+                        <th scope="col">Danh mục</th>
+                        <th scope="col">Số lượng bán</th>
+                        <th scope="col">Số lượng trả</th>
+                        <th scope="col">Số lượng ròng</th>
+                        <th scope="col">Doanh thu bán (đ)</th>
+                        <th scope="col">Tiền hoàn trả (đ)</th>
+                        <th scope="col">Doanh thu ròng (đ)</th>
+                        <th scope="col">Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.product_id }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.brand or 'Không có' }}</td>
+                            <td>{{ product.category_name }}</td>
+                            <td>{{ product.quantity_sold }}</td>
+                            <td>{{ product.quantity_returned }}</td>
+                            <td>{{ product.net_quantity }}</td>
+                            <td>{{ product.sales_revenue }}</td>
+                            <td>{{ product.refund_amount }}</td>
+                            <td>{{ product.net_revenue }}</td>
+                            <td>
+                                <a href="{{ url_for('revenue.transactions', product_id=product.product_id, start_date=start_date, end_date=end_date) }}">Xem chi tiết giao dịch</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Không có dữ liệu doanh thu trong khoảng ngày đã chọn.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
