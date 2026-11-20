@@ -18,16 +18,16 @@
 
 ## 2. Công nghệ và môi trường
 
-| Thành phần          | Phiên bản/công nghệ                                             |
-| ------------------- | --------------------------------------------------------------- |
-| Ngôn ngữ            | Python 3.14.8 (môi trường phát triển của dự án)                 |
-| Web framework       | Flask 3.1.3                                                     |
-| Kết nối MySQL       | PyMySQL 1.2.4                                                   |
-| Mật khẩu            | argon2-cffi 25.1.0 (Argon2id)                                   |
-| Cấu hình môi trường | python-dotenv 1.2.4                                             |
-| Giao diện           | HTML, Jinja2, CSS                                               |
-| Database            | MySQL, 29 bảng theo schema dự án, Stored Procedure              |
-| Kiểm thử            | `unittest`, Flask Test Client và kiểm thử tích hợp có kiểm soát |
+| Thành phần | Phiên bản/công nghệ |
+|---|---|
+| Ngôn ngữ | Python 3.14.8 (môi trường phát triển của dự án) |
+| Web framework | Flask 3.1.3 |
+| Kết nối MySQL | PyMySQL 1.2.4 |
+| Mật khẩu | argon2-cffi 25.1.0 (Argon2id) |
+| Cấu hình môi trường | python-dotenv 1.2.4 |
+| Giao diện | HTML, Jinja2, CSS |
+| Database | MySQL, 29 bảng theo schema dự án, Stored Procedure |
+| Kiểm thử | `unittest`, Flask Test Client và kiểm thử tích hợp có kiểm soát |
 
 Các thư viện Python được khai báo trong `requirements.txt`. Dự án được phát triển và chạy thử trên macOS; MySQL có thể chạy trong Docker nếu đã thiết lập container tương ứng.
 
@@ -56,7 +56,10 @@ qlst-project/
 │   ├── base.html
 │   ├── templates/                 # Các template Jinja2
 │   └── static/                    # CSS/JS, tài nguyên tĩnh
-
+└── docs/
+    ├── diagrams/                  # Sơ đồ phân tích và thiết kế
+    ├── prompts/                   # Tư liệu hỗ trợ quá trình làm báo cáo
+    └── report/                    # Nội dung báo cáo
 ```
 
 Thư mục `.venv/`, `.git/`, `__pycache__/` và file `.env` là thành phần môi trường cục bộ; không cần phân phối kèm mã nguồn.
@@ -156,18 +159,18 @@ python app.py
 
 Một số địa chỉ chính:
 
-| Method   | URL                                           | Chức năng                                              |
-| -------- | --------------------------------------------- | ------------------------------------------------------ |
-| GET      | `/`                                           | Điều hướng theo trạng thái đăng nhập                   |
-| GET/POST | `/login`                                      | Hiển thị và xử lý đăng nhập                            |
-| POST     | `/logout`                                     | Đăng xuất có CSRF                                      |
-| GET/POST | `/register`                                   | Đăng ký thành viên                                     |
-| GET      | `/menu`                                       | Menu nhân viên đã đăng nhập                            |
-| GET      | `/account`                                    | Trang tài khoản khách hàng                             |
-| GET      | `/reports`                                    | Menu báo cáo (cần quyền)                               |
-| GET      | `/revenue`                                    | Bộ lọc và thống kê doanh thu theo sản phẩm (cần quyền) |
-| GET      | `/revenue/products/<product_id>/transactions` | Chi tiết giao dịch (cần quyền)                         |
-| GET      | `/health`                                     | Xác nhận Flask đang chạy, **không kiểm tra MySQL**     |
+| Method | URL | Chức năng |
+|---|---|---|
+| GET | `/` | Điều hướng theo trạng thái đăng nhập |
+| GET/POST | `/login` | Hiển thị và xử lý đăng nhập |
+| POST | `/logout` | Đăng xuất có CSRF |
+| GET/POST | `/register` | Đăng ký thành viên |
+| GET | `/menu` | Menu nhân viên đã đăng nhập |
+| GET | `/account` | Trang tài khoản khách hàng |
+| GET | `/reports` | Menu báo cáo (cần quyền) |
+| GET | `/revenue` | Bộ lọc và thống kê doanh thu theo sản phẩm (cần quyền) |
+| GET | `/revenue/products/<product_id>/transactions` | Chi tiết giao dịch (cần quyền) |
+| GET | `/health` | Xác nhận Flask đang chạy, **không kiểm tra MySQL** |
 
 Ví dụ URL báo cáo (sau khi đăng nhập bằng tài khoản đủ quyền):
 
@@ -247,17 +250,17 @@ Các hình UML chính thức dùng trong báo cáo cần được vẽ và **xu�
 
 ## 9. Khắc phục lỗi thường gặp
 
-| Hiện tượng                                  | Kiểm tra                                                                    |
-| ------------------------------------------- | --------------------------------------------------------------------------- |
-| `ModuleNotFoundError`                       | Đã `source .venv/bin/activate` và cài `requirements.txt` chưa?              |
-| `Thieu MYSQL_USER` / `Thieu MYSQL_PASSWORD` | Kiểm tra các biến trong `.env`; không gửi mật khẩu khi nhờ hỗ trợ           |
-| Thiếu `FLASK_SECRET_KEY`                    | Tạo secret ngẫu nhiên, không dùng giá trị `CHANGE_ME...`                    |
-| `Connection refused` đến MySQL              | Kiểm tra container/server và cổng 3307                                      |
-| `Unknown database`                          | Kiểm tra `MYSQL_DATABASE`, database đã tồn tại chưa                         |
-| 403 khi mở báo cáo                          | Tài khoản không thuộc vai trò đủ quyền hoặc hồ sơ/trạng thái không hợp lệ   |
-| Chuyển sang `/login`                        | Chưa đăng nhập hoặc session đã hết hiệu lực                                 |
-| `/health` hoạt động nhưng báo cáo lỗi       | `/health` không kiểm tra MySQL; cần kiểm tra riêng kết nối database         |
-| Không mở được cổng 5000                     | Kiểm tra ứng dụng khác đang sử dụng cổng hoặc Terminal chạy server trước đó |
+| Hiện tượng | Kiểm tra |
+|---|---|
+| `ModuleNotFoundError` | Đã `source .venv/bin/activate` và cài `requirements.txt` chưa? |
+| `Thieu MYSQL_USER` / `Thieu MYSQL_PASSWORD` | Kiểm tra các biến trong `.env`; không gửi mật khẩu khi nhờ hỗ trợ |
+| Thiếu `FLASK_SECRET_KEY` | Tạo secret ngẫu nhiên, không dùng giá trị `CHANGE_ME...` |
+| `Connection refused` đến MySQL | Kiểm tra container/server và cổng 3307 |
+| `Unknown database` | Kiểm tra `MYSQL_DATABASE`, database đã tồn tại chưa |
+| 403 khi mở báo cáo | Tài khoản không thuộc vai trò đủ quyền hoặc hồ sơ/trạng thái không hợp lệ |
+| Chuyển sang `/login` | Chưa đăng nhập hoặc session đã hết hiệu lực |
+| `/health` hoạt động nhưng báo cáo lỗi | `/health` không kiểm tra MySQL; cần kiểm tra riêng kết nối database |
+| Không mở được cổng 5000 | Kiểm tra ứng dụng khác đang sử dụng cổng hoặc Terminal chạy server trước đó |
 
 ## 10. Ghi chú
 
