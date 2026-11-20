@@ -34,7 +34,7 @@ from src.model.registration_service import (
 
 registration_bp = Blueprint("registration", __name__)
 
-_CSRF_SESSION_KEY = "registration_csrf_token"
+_CSRF_SESSION_KEY = "neIumUmwnh3OjL1n5i93"
 _FORM_FIELDS = (
     "full_name", 
     "phone", 
