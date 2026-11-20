@@ -32,6 +32,10 @@ def create_app() -> Flask:
     def home():
         return render_template("index.html", title="Sieu thi dien may")
 
+    @app.get("/reports")
+    def reports_menu():
+        return render_template("reports.html")
+
     @app.get("/health")
     def health():
         # Chi xac nhan Flask dang chay; KHONG dai dien ket noi MySQL.

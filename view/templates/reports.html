@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Xem báo cáo</title>
+</head>
+<body>
+    <h1>Xem báo cáo</h1>
+
+    <nav aria-label="Lựa chọn báo cáo">
+        <form action="{{ url_for('revenue.report') }}" method="get">
+            <button type="submit">Thống kê mặt hàng theo doanh thu</button>
+        </form>
+
+        <form action="{{ url_for('home') }}" method="get" style="margin-top: 16px;">
+            <button type="submit">Quay lại menu hệ thống</button>
+        </form>
+    </nav>
+</body>
+</html>
