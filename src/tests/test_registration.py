@@ -238,9 +238,9 @@ class RegistrationIntegrationTests(unittest.TestCase):
 
         cls.original_user_count = _number_of_rows("users")
         cls.original_customer_count = _number_of_rows("customers")
-        if (cls.original_user_count, cls.original_customer_count) != (7, 3):
+        if (cls.original_user_count, cls.original_customer_count) != (8, 4):
             raise RuntimeError(
-                "SAFETY STOP: expected untouched seed (7 users, 3 customers)"
+                "SAFETY STOP: expected baseline (8 users, 4 customers)"
             )
         cls.service = RegistrationService(database=GuardedTestDatabase)
         cls.password_service = PasswordService()

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ thống quản lý siêu thị điện máy</title>
+</head>
+<body>
+    <h1>Hệ thống quản lý siêu thị điện máy</h1>
+
+    <nav aria-label="Menu hệ thống">
+        {% if can_view_reports %}
+            <form action="{{ url_for('reports_menu') }}" method="get">
+                <button type="submit">Xem báo cáo</button>
+            </form>
+        {% endif %}
+
+        <form action="{{ url_for('auth.logout') }}" method="post"
+              style="margin-top: 16px;">
+            <input type="hidden" name="csrf_token"
+                   value="{{ logout_csrf_token }}">
+            <button type="submit">Đăng xuất</button>
+        </form>
+    </nav>
+</body>
+</html>

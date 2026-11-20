@@ -9,6 +9,7 @@ from datetime import date
 
 from flask import Blueprint, current_app, render_template, request
 
+from src.controller.auth_controller import require_revenue_access
 from src.model.revenue import ProductRevenue, ProductTransaction
 from src.model.revenue_service import (
     RevenueService,
@@ -84,6 +85,7 @@ def _render_transactions(
 
 
 @revenue_bp.get("/revenue")
+@require_revenue_access
 def report():
     """GET /revenue: hiển thị form hoặc báo cáo theo khoảng ngày."""
     # Mở trang lần đầu: chưa yêu cầu truy vấn, không mở connection.
@@ -106,6 +108,7 @@ def report():
 
 
 @revenue_bp.get("/revenue/products/<product_id>/transactions")
+@require_revenue_access
 def transactions(product_id: str):
     """GET: hiển thị giao dịch bán/hoàn trả của một sản phẩm trong kỳ."""
     try:
