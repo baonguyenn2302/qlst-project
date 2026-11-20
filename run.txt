@@ -1,0 +1,64 @@
+# HUONG DAN CHAY NHANH — qlst-project (macOS)
+# Sinh vien: Nguyen Gia Bao — B23DCCN075 — De so 10
+# Chay tung nhom lenh theo nhu cau. Khong dan toan bo file vao Terminal.
+
+# 1) Vao thu muc du an
+cd /Users/baonguyenn/SourceCode/Demos/ptit-subjects/sad-projects/qlst-project
+
+# 2) Kich hoat moi truong ao DA CO
+source .venv/bin/activate
+python --version
+
+# Neu .venv khong ton tai hoac bi loi, tao lai bang Python 3.14 tren Mac:
+# python3.14 -m venv .venv
+# source .venv/bin/activate
+
+# 3) Cai/cap nhat thu vien theo requirements.txt
+python -m pip install -r requirements.txt
+
+# 4) Kiem tra cau hinh (khong in mat khau)
+# Neu CHUA co file .env: cp .env.example .env
+# Mo .env trong VS Code va nhap MYSQL_USER, MYSQL_PASSWORD, FLASK_SECRET_KEY.
+# MYSQL_HOST=127.0.0.1 ; MYSQL_PORT=3307
+# Doi MYSQL_DATABASE=qlst_test khi chay thu/kiem thu.
+# LUU Y: .env.example ban goc de MYSQL_DATABASE=qlst.
+# Tao chuoi secret key moi de dan vao .env neu can:
+# python -c 'import secrets; print(secrets.token_hex(32))'
+
+# 5) Neu MySQL chay qua Docker: kiem tra container truoc
+# docker ps
+# Chi khi container qlst-mysql DA TON TAI nhung dang dung:
+# docker start qlst-mysql
+
+# 6) KHOI CHAY FLASK
+python app.py
+
+# 7) Mo trinh duyet
+# Trang chu:        http://127.0.0.1:5000/
+# Dang nhap:        http://127.0.0.1:5000/login
+# Dang ky:          http://127.0.0.1:5000/register
+# Menu nhan vien:  http://127.0.0.1:5000/menu
+# Tai khoan khach: http://127.0.0.1:5000/account
+# Bao cao:          http://127.0.0.1:5000/reports
+# Thong ke:         http://127.0.0.1:5000/revenue
+# Kiem tra Flask:   http://127.0.0.1:5000/health
+# /health CHI kiem tra Flask, KHONG kiem tra ket noi MySQL.
+# Bao cao yeu cau nhan vien admin/manager du quyen dang nhap.
+# Dung server: Ctrl + C
+
+# 8) KIEM THU: chay TRONG TERMINAL KHAC, tai thu muc goc va da activate .venv
+
+# Module 2 — mock, khong ket noi MySQL (chay mac dinh, khong dat RUN_REVENUE_DB_TESTS)
+# python -m unittest -v src.tests.test_revenue
+
+# Module 2 — tich hop MySQL: chi qlst_test, truy van doc
+# RUN_REVENUE_DB_TESTS=1 MYSQL_DATABASE=qlst_test python -m unittest -v src.tests.test_revenue
+
+# Module 1 — tich hop MySQL: chi qlst_test, co tao/xoa du lieu test duoc kiem soat
+# MYSQL_DATABASE=qlst_test python -m unittest -v src.tests.test_registration
+
+# 9) CANH BAO AN TOAN
+# KHONG chay database/init.sql tren database dang dung: chua lenh DROP DATABASE / DROP USER.
+# KHONG tu chay schema.sql/seed.sql/test.sql neu chua xac minh database dich.
+# KHONG chay src.tests.check_environment nhu smoke test qlst_test: script dang hardcode qlst.
+# KHONG commit/chia se .env, password hay secret key.
