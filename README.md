@@ -56,10 +56,7 @@ qlst-project/
 │   ├── base.html
 │   ├── templates/                 # Các template Jinja2
 │   └── static/                    # CSS/JS, tài nguyên tĩnh
-└── docs/
-    ├── diagrams/                  # Sơ đồ phân tích và thiết kế
-    ├── prompts/                   # Tư liệu hỗ trợ quá trình làm báo cáo
-    └── report/                    # Nội dung báo cáo
+
 ```
 
 Thư mục `.venv/`, `.git/`, `__pycache__/` và file `.env` là thành phần môi trường cục bộ; không cần phân phối kèm mã nguồn.
